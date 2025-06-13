@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Us - CollaborateX: Our Story</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Design System for About Us Page */
+        :root {
+            --primary-accent: #6f42c1; /* Deep Lavender/Violet */
+            --secondary-accent: #ffb347; /* Warm Orange */
+            --text-dark: #333d42;
+            --text-medium: #5a6268;
+            --text-light: #8e949a;
+            --background-light: #f5f7fa;
+            --white: #ffffff;
+            --border-color: #e0e6ed;
+            --shadow-light: rgba(0, 0, 0, 0.08);
+            --shadow-medium: rgba(0, 0, 0, 0.15);
+            --card-bg: #ffffff;
+        }
+
+        /* Reset & Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, var(--background-light) 0%, var(--white) 100%);
+            color: var(--text-medium);
+            line-height: 1.7; /* Slightly more spacious line height */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* --- Navigation Bar --- */
+        nav {
+            background-color: var(--primary-accent);
+            padding: 18px 0;
+            box-shadow: 0 4px 15px var(--shadow-light);
+            z-index: 100;
+        }
+
+            nav ul {
+                list-style: none;
+                display: flex;
+                justify-content: center;
+                margin: 0;
+                padding: 0;
+            }
+
+                nav ul li {
+                    margin: 0 25px;
+                }
+
+                    nav ul li a {
+                        color: var(--white);
+                        text-decoration: none;
+                        font-family: 'Montserrat', sans-serif;
+                        font-weight: 600;
+                        font-size: 1.05em;
+                        padding: 8px 15px;
+                        border-radius: 25px;
+                        transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+                        position: relative;
+                        overflow: hidden;
+                    }
+
+                        nav ul li a::before {
+                            content: '';
+                            position: absolute;
+                            top: 0;
+                            left: -100%;
+                            width: 100%;
+                            height: 100%;
+                            background: rgba(255, 255, 255, 0.1);
+                            transition: left 0.3s ease-out;
+                            z-index: 0;
+                        }
+
+                        nav ul li a:hover::before {
+                            left: 0;
+                        }
+
+                        nav ul li a:hover {
+                            background-color: rgba(255, 255, 255, 0.1);
+                            transform: translateY(-2px);
+                            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+                        }
+
+        /* --- Header Section --- */
+        header {
+            background: linear-gradient(to right, var(--primary-accent), #8a5acd);
+            color: var(--white);
+            padding: 60px 20px 40px 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 1s ease-out;
+        }
+
+            header::before {
+                content: '';
+                position: absolute;
+                top: -50px;
+                left: -50px;
+                right: -50px;
+                bottom: -50px;
+                background-image: radial-gradient(circle at 100% 150%, var(--primary-accent) 0%, transparent 100%), radial-gradient(circle at 0% -50%, var(--secondary-accent) 0%, transparent 100%);
+                opacity: 0.1;
+                transform: rotate(15deg);
+                z-index: 0;
+            }
+
+            header h1 {
+                font-family: 'Montserrat', sans-serif;
+                font-weight: 700;
+                font-size: 3.5rem;
+                margin-bottom: 10px;
+                position: relative;
+                z-index: 1;
+                animation: slideInLeft 1s ease-out;
+            }
+
+            header nav {
+                background: none;
+                box-shadow: none;
+                padding-top: 20px;
+                position: relative;
+                z-index: 1;
+            }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* --- Main Content Area --- */
+        main {
+            flex-grow: 1;
+            max-width: 1100px; /* Max width for content */
+            margin: 50px auto; /* Centered with vertical spacing */
+            padding: 0 20px 50px 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid for sections */
+            gap: 30px; /* Space between grid items */
+        }
+
+        section {
+            background: var(--card-bg);
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px var(--shadow-light); /* Softer, deeper shadow */
+            border-top: 5px solid var(--secondary-accent); /* Accent border on top */
+            text-align: left; /* Align text within sections */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0; /* Start hidden for animation */
+            animation: fadeInUpSection 0.8s ease-out forwards;
+        }
+
+            section:nth-child(1) {
+                animation-delay: 0.1s;
+            }
+
+            section:nth-child(2) {
+                animation-delay: 0.2s;
+            }
+
+            section:nth-child(3) {
+                animation-delay: 0.3s;
+            }
+
+            section:nth-child(4) {
+                animation-delay: 0.4s;
+            }
+
+            section:nth-child(5) {
+                animation-delay: 0.5s;
+            }
+            /* For new section */
+            section:nth-child(6) {
+                animation-delay: 0.6s;
+            }
+        /* For new section */
+
+
+        @keyframes fadeInUpSection {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        section:hover {
+            transform: translateY(-5px); /* Lift effect on hover */
+            box-shadow: 0 12px 35px rgba(0,0,0,0.12); /* Stronger shadow on hover */
+        }
+
+        section h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.2rem; /* Consistent heading size */
+            color: var(--primary-accent);
+            margin-bottom: 20px;
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+            section h2::after {
+                content: '';
+                display: block;
+                width: 50px;
+                height: 3px;
+                background-color: var(--secondary-accent);
+                margin-top: 10px;
+                border-radius: 2px;
+            }
+
+        section p, section ul {
+            font-size: 1.05rem;
+            color: var(--text-medium);
+            margin-bottom: 15px;
+        }
+
+        section ul {
+            list-style: none; /* Remove default bullet points */
+            padding-left: 0;
+        }
+
+            section ul li {
+                position: relative;
+                padding-left: 25px; /* Space for custom bullet */
+                margin-bottom: 10px;
+                font-weight: 600;
+                color: var(--text-dark); /* Darker for names */
+            }
+
+                section ul li:last-child {
+                    margin-bottom: 0;
+                }
+
+                section ul li::before {
+                    content: "\f007"; /* Font Awesome user icon */
+                    font-family: "Font Awesome 5 Free";
+                    font-weight: 900;
+                    position: absolute;
+                    left: 0;
+                    color: var(--secondary-accent); /* Orange icon */
+                    font-size: 1.1em;
+                    top: 2px;
+                }
+
+        /* Why CollaborateX section specific styling */
+        .why-collaboratex-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+            .why-collaboratex-list li {
+                background-color: var(--background-light);
+                padding: 15px 20px;
+                border-radius: 10px;
+                border-left: 4px solid var(--primary-accent);
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                font-weight: 600;
+                color: var(--text-dark);
+                box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+                transition: background-color 0.3s ease, transform 0.2s ease;
+            }
+
+                .why-collaboratex-list li:hover {
+                    background-color: #eaf1f7;
+                    transform: translateX(5px);
+                }
+
+                .why-collaboratex-list li i {
+                    font-size: 1.5em;
+                    color: var(--secondary-accent);
+                }
+
+        /* --- Footer --- */
+        footer {
+            background-color: var(--text-dark);
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            padding: 25px 20px;
+            font-size: 0.95rem;
+            margin-top: auto;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 900px) {
+            main {
+                grid-template-columns: 1fr; /* Stack sections on smaller screens */
+            }
+
+            section {
+                max-width: 600px; /* Limit width of stacked sections */
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 40px 15px 30px 15px;
+            }
+
+                header h1 {
+                    font-size: 2.8rem;
+                }
+
+                header nav ul {
+                    flex-direction: column;
+                    gap: 10px;
+                }
+
+                    header nav ul li {
+                        margin: 0;
+                    }
+
+            main {
+                padding: 30px 15px;
+                gap: 20px;
+            }
+
+            section {
+                padding: 25px;
+                border-radius: 10px;
+            }
+
+                section h2 {
+                    font-size: 1.8rem;
+                }
+
+                section p, section ul li {
+                    font-size: 1rem;
+                }
+
+            .why-collaboratex-list li {
+                padding: 12px 15px;
+                gap: 10px;
+            }
+
+                .why-collaboratex-list li i {
+                    font-size: 1.2em;
+                }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 2.2rem;
+            }
+
+            header nav ul li a {
+                font-size: 0.95em;
+            }
+
+            section h2 {
+                font-size: 1.6rem;
+            }
+
+            section p, section ul li {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Collaborate</h1>
+        <nav>
+            <ul>
+                  <li><a href="index.html">Login</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="forums.html">Forums</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section>
+            <h2>Our Story</h2>
+            <p>
+                CollaborateX began as a vision for a more connected and efficient digital workspace. In an increasingly globalized world, we recognized the growing need for tools that truly empower teams to work together seamlessly, regardless of geographical boundaries or time zones. Our journey started as an academic exploration, delving into cutting-edge technologies to solve real-world collaboration challenges.
+            </p>
+            <p>
+                From the initial concept, we've focused on integrating *intelligent features* like voice assistance and facial recognition, alongside core collaborative functionalities. Our goal is to create a platform that not only enhances productivity but also simplifies the user experience, making advanced technology accessible and intuitive for everyone.
+            </p>
+        </section>
+
+        <section>
+            <h2>Our Mission & Vision</h2>
+            <p>
+                At CollaborateX, our *mission is to empower individuals and teams* to achieve their full potential by providing an intuitive, secure, and technologically advanced platform for seamless communication and productivity. We believe in breaking down barriers to collaboration.
+            </p>
+            <p>
+                Our *vision is to be the leading innovators* in digital collaboration, continuously integrating cutting-edge AI and security features to redefine how teams interact and create together. We aim to foster environments where ideas flow freely and projects flourish effortlessly.
+            </p>
+        </section>
+
+        <section>
+            <h2>Why Choose CollaborateX?</h2>
+            <ul class="why-collaboratex-list">
+                <li><i class="fas fa-magic"></i> *Innovative Features:* Experience next-gen tools like voice commands and facial recognition for effortless login.</li>
+                <li><i class="fas fa-lock"></i> *Enhanced Security:* Your data and communications are protected with advanced encryption and secure authentication.</li>
+                <li><i class="fas fa-rocket"></i> *Boosted Productivity:* Streamline workflows with real-time chat, shared workspaces, and intuitive document management.</li>
+                <li><i class="fas fa-users-rays"></i> *Seamless Collaboration:* Connect with your team from anywhere, on any device, fostering a truly unified working environment.</li>
+                <li><i class="fas fa-lightbulb"></i> *User-Centric Design:* Built with simplicity and efficiency in mind, making complex tasks feel effortless.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Meet the Innovators</h2>
+            <p>We are a dedicated team driven by a passion for technology and collaboration. This project is the culmination of our collective efforts in an academic setting, aiming to push the boundaries of what a collaboration platform can be.</p>
+            <ul>
+                <li><strong>Ndivhuwo Tshishonge</strong> – Lead Developer & UX Designer</li>
+                <li><strong>Palesa Koloi</strong> – Project Manager & Strategy Lead</li>
+                <li><strong>Paballo Litabe</strong> – Front-End Development Specialist</li>
+                <li><strong>Siphokazi Kankalani</strong> – Quality Assurance & Research Analyst</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Our Journey & Future</h2>
+            <p>
+                This prototype was created as part of an academic project to explore the potential of integrating secure authentication and smart technology (like voice assistance and face recognition) in collaborative workspaces. It represents our commitment to innovation and practical problem-solving.
+            </p>
+            <p>
+                Looking ahead, we envision expanding CollaborateX with more intelligent integrations, deeper analytics for team performance, and community-driven features that adapt to the evolving needs of modern teams. We're excited about the possibilities!
+            </p>
+        </section>
+    </main>
+
+    <footer>
+        &copy; 2025 CollaborateX. All rights reserved.
+    </footer>
+</body>
+</html>

@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>IIE Study Hub - Collaboration Tools</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Design System for IIE Study Hub */
+        :root {
+            --primary-accent: #6f42c1; /* Deep Lavender/Violet */
+            --secondary-accent: #ffb347; /* Warm Orange */
+            --text-dark: #333d42;
+            --text-medium: #5a6268;
+            --text-light: #8e949a;
+            --background-light: #f5f7fa;
+            --white: #ffffff;
+            --border-color: #e0e6ed;
+            --shadow-light: rgba(0, 0, 0, 0.08);
+            --shadow-medium: rgba(0, 0, 0, 0.15);
+            --card-bg: #ffffff;
+            --button-gradient-start: #7a5acd; /* Lighter primary for button gradient */
+            --button-gradient-end: #6f42c1; /* Primary accent for button gradient end */
+            --button-hover-start: #6f42c1;
+            --button-hover-end: #5a349e; /* Darker primary for hover */
+        }
+
+        /* Reset & Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, var(--background-light) 0%, var(--white) 100%);
+            color: var(--text-medium);
+            line-height: 1.7;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* --- Navigation Bar --- */
+        nav {
+            background-color: var(--primary-accent);
+            padding: 18px 0;
+            box-shadow: 0 4px 15px var(--shadow-light);
+            z-index: 100;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li {
+            margin: 0 25px;
+        }
+
+        nav ul li a {
+            color: var(--white);
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1.05em;
+            padding: 8px 15px;
+            border-radius: 25px;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        nav ul li a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            transition: left 0.3s ease-out;
+            z-index: 0;
+        }
+
+        nav ul li a:hover::before {
+            left: 0;
+        }
+
+        nav ul li a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* --- Header Section (Hero) --- */
+        header {
+            background: linear-gradient(to right, var(--primary-accent), #8a5acd);
+            color: var(--white);
+            padding: 60px 20px 40px 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 1s ease-out;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            left: -50px;
+            right: -50px;
+            bottom: -50px;
+            background-image: radial-gradient(circle at 100% 150%, var(--primary-accent) 0%, transparent 100%),
+                              radial-gradient(circle at 0% -50%, var(--secondary-accent) 0%, transparent 100%);
+            opacity: 0.1;
+            transform: rotate(15deg);
+            z-index: 0;
+        }
+
+        header h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+            animation: slideInLeft 1s ease-out;
+        }
+
+        header p {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-top: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* --- Main Content Area & Section Headers --- */
+        main {
+            flex-grow: 1;
+            padding: 50px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        section {
+            width: 100%;
+            margin-bottom: 60px; /* More space between sections */
+            text-align: center;
+        }
+
+        section:last-of-type {
+            margin-bottom: 20px; /* Less margin for the last section before footer */
+        }
+
+        section h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.8rem;
+            color: var(--primary-accent);
+            margin-bottom: 20px; /* More space below heading */
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 10px;
+            animation: fadeInUp 0.8s ease-out forwards;
+            animation-delay: 0.1s;
+            opacity: 0;
+        }
+
+        section h2::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background-color: var(--secondary-accent);
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        section p {
+            font-size: 1.15rem;
+            color: var(--text-medium);
+            margin-bottom: 30px; /* More space below introductory paragraph */
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeInUp 0.8s ease-out forwards;
+            animation-delay: 0.2s;
+            opacity: 0;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Collaboration Sections --- */
+        .collaboration-section {
+            background: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 8px 25px var(--shadow-light);
+            padding: 35px;
+            text-align: left;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-top: 5px solid var(--secondary-accent);
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+        }
+
+        .collaboration-section:nth-of-type(1) { animation-delay: 0.3s; }
+        .collaboration-section:nth-of-type(2) { animation-delay: 0.4s; }
+        .collaboration-section:nth-of-type(3) { animation-delay: 0.5s; }
+
+
+        .collaboration-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.12);
+        }
+
+        .collaboration-section h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8em; /* Larger subheading for features */
+            font-weight: 700;
+            color: var(--primary-accent);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .collaboration-section h3 i {
+            font-size: 1.2em;
+            color: var(--secondary-accent);
+        }
+
+        .collaboration-section ul {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 20px;
+        }
+
+        .collaboration-section ul li {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 1.05em;
+            color: var(--text-medium);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .collaboration-section ul li:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .collaboration-section ul li span.meta {
+            font-size: 0.9em;
+            color: var(--text-light);
+            font-style: italic;
+        }
+
+        .action-link {
+            color: var(--primary-accent);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease, text-decoration 0.3s ease;
+        }
+        .action-link:hover {
+            color: var(--secondary-accent);
+            text-decoration: underline;
+        }
+
+        .create-button {
+            display: inline-block;
+            padding: 12px 28px;
+            background: linear-gradient(to right, var(--button-gradient-start), var(--button-gradient-end));
+            color: var(--white);
+            border: none;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.05em;
+            letter-spacing: 0.5px;
+            transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px rgba(111, 66, 193, 0.2);
+            margin-top: 20px;
+        }
+
+        .create-button:hover {
+            background: linear-gradient(to right, var(--button-hover-start), var(--button-hover-end));
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(111, 66, 193, 0.3);
+        }
+
+        .coming-soon {
+            background-color: var(--background-light);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px dashed var(--secondary-accent);
+            color: var(--text-medium);
+            font-style: italic;
+            margin-top: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            font-size: 1.1em;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+        .coming-soon i {
+            font-size: 1.5em;
+            color: var(--secondary-accent);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.02); opacity: 0.9; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+
+        /* --- Footer --- */
+        footer {
+            background-color: var(--text-dark);
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            padding: 25px 20px;
+            font-size: 0.95rem;
+            margin-top: auto;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 900px) {
+            header h1 {
+                font-size: 3.2rem;
+            }
+            header p {
+                font-size: 1.25rem;
+            }
+            section h2 {
+                font-size: 2.2rem;
+            }
+            section p {
+                font-size: 1.05rem;
+            }
+            .collaboration-section {
+                padding: 30px;
+            }
+            .collaboration-section h3 {
+                font-size: 1.5em;
+            }
+            .collaboration-section ul li {
+                font-size: 1em;
+                flex-direction: column; /* Stack details for lists */
+                align-items: flex-start;
+                gap: 5px;
+            }
+            .collaboration-section ul li span.meta {
+                text-align: left;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 60px 15px 40px 15px;
+            }
+            header h1 {
+                font-size: 2.8rem;
+            }
+            header p {
+                font-size: 1.15rem;
+            }
+            nav ul {
+                flex-direction: column;
+                gap: 10px;
+            }
+            nav ul li {
+                margin: 0;
+            }
+            main {
+                padding: 30px 15px;
+            }
+            section h2 {
+                font-size: 2rem;
+            }
+            section p {
+                font-size: 1rem;
+            }
+            .collaboration-section {
+                margin-bottom: 30px;
+                padding: 25px;
+                border-radius: 12px;
+            }
+            .collaboration-section h3 {
+                font-size: 1.3em;
+            }
+            .collaboration-section ul li {
+                padding: 10px 0;
+                font-size: 0.95em;
+            }
+            .create-button {
+                width: 100%;
+                font-size: 1em;
+            }
+            .coming-soon {
+                font-size: 1em;
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 2.2rem;
+            }
+            header p {
+                font-size: 1rem;
+            }
+            nav ul li a {
+                font-size: 0.95em;
+            }
+            section h2 {
+                font-size: 1.8rem;
+            }
+            section p {
+                font-size: 0.95rem;
+            }
+            .collaboration-section h3 {
+                font-size: 1.1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Collaboration Tools</h1>
+        <p>Enhance your teamwork and achieve shared success with our integrated collaboration features.</p>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="forums.html">Forums</a></li>
+                <li><a href="collaboration.html">Collaboration</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="login.html">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="collaboration-section">
+            <h3><i class="fas fa-file-alt"></i> Shared Documents</h3>
+            <p>Collaborate on documents in real-time, track changes, and manage versions effortlessly.</p>
+            <ul>
+                <li>Project Proposal - Group Alpha <span class="meta">(Last edited: Yesterday)</span></li>
+                <li>Research Paper Draft - Group Beta <span class="meta">(Last edited: Today, 10:00 AM)</span></li>
+                <li>Presentation Slides - Group Gamma <span class="meta">(Last edited: 2 days ago)</span></li>
+            </ul>
+            <a href="#" class="create-button">Create New Document</a>
+        </section>
+
+        <section class="collaboration-section">
+            <h3><i class="fas fa-video"></i> Video Conferencing</h3>
+            <p>Join or schedule high-quality video conferences for seamless project discussions and study sessions.</p>
+            <ul>
+                <li>Project Meeting - Tuesday 2:00 PM <a href="#" class="action-link">(Join)</a></li>
+                <li>Study Group Session - Thursday 4:00 PM <a href="#" class="action-link">(Join)</a></li>
+            </ul>
+            <a href="#" class="create-button">Schedule a Meeting</a>
+        </section>
+
+        <section class="collaboration-section">
+            <h3><i class="fas fa-tasks"></i> Project Management Tools</h3>
+            <p>Streamline your project workflows with dedicated features for task assignment, deadline tracking, and progress visualization.</p>
+            <div class="coming-soon">
+                <i class="fas fa-hourglass-half"></i> Features for task management, deadlines, and progress tracking will be available soon.
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        &copy; 2025 IIE Study Hub. All rights reserved.
+    </footer>
+</body>
+</html>

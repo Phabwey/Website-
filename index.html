@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ACP - Your Collaborative Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Unique & Beautiful Design System */
+        :root {
+            --primary-accent: #6f42c1; /* Deep Lavender/Violet - unique primary */
+            --secondary-accent: #ffb347; /* Warm Orange - engaging secondary */
+            --text-dark: #333d42; /* Almost Black Blue */
+            --text-medium: #5a6268; /* Dark Grey */
+            --text-light: #8e949a; /* Medium Grey */
+            --background-light: #f5f7fa; /* Very light grey-blue */
+            --white: #ffffff;
+            --border-color: #e0e6ed;
+            --shadow-light: rgba(0, 0, 0, 0.08);
+            --shadow-medium: rgba(0, 0, 0, 0.15);
+            --error-red: #dc3545;
+            --success-green: #28a745;
+            --input-focus-glow: rgba(111, 66, 193, 0.25); /* Primary accent with opacity */
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, var(--background-light) 0%, var(--white) 100%);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            color: var(--text-medium);
+            line-height: 1.6;
+            overflow-x: hidden; /* Prevent horizontal scroll from animations */
+        }
+
+        /* Navigation Bar */
+        nav {
+            background-color: var(--primary-accent);
+            padding: 18px 0;
+            box-shadow: 0 4px 15px var(--shadow-light);
+            z-index: 100;
+            position: relative;
+        }
+
+            nav ul {
+                list-style-type: none;
+                display: flex;
+                justify-content: center;
+                margin: 0;
+                padding: 0;
+            }
+
+                nav ul li {
+                    margin: 0 25px;
+                }
+
+                    nav ul li a {
+                        color: var(--white);
+                        text-decoration: none;
+                        font-family: 'Montserrat', sans-serif;
+                        font-weight: 600;
+                        font-size: 1.05em;
+                        padding: 8px 15px;
+                        border-radius: 25px; /* Pill shape for navigation */
+                        transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+                        position: relative;
+                        overflow: hidden; /* For subtle highlight effect */
+                    }
+
+                        nav ul li a::before {
+                            content: '';
+                            position: absolute;
+                            top: 0;
+                            left: -100%;
+                            width: 100%;
+                            height: 100%;
+                            background: rgba(255, 255, 255, 0.1);
+                            transition: left 0.3s ease-out;
+                            z-index: 0;
+                        }
+
+                        nav ul li a:hover::before {
+                            left: 0;
+                        }
+
+                        nav ul li a:hover {
+                            background-color: rgba(255, 255, 255, 0.1); /* Subtle background on hover */
+                            transform: translateY(-2px);
+                            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+                        }
+
+        /* Main Container for Forms */
+        .container {
+            background: var(--white);
+            padding: 45px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px var(--shadow-medium);
+            width: 100%;
+            max-width: 480px; /* Wider for more comfortable input fields */
+            margin: 60px auto;
+            border-top: 6px solid var(--primary-accent); /* Stronger accent border */
+            animation: fadeInSlideUp 0.8s ease-out forwards;
+            position: relative;
+            overflow: hidden; /* For inner form transitions */
+        }
+
+        @keyframes fadeInSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            font-family: 'Montserrat', sans-serif;
+            text-align: center;
+            margin-bottom: 35px;
+            color: var(--primary-accent);
+            font-size: 2.5em; /* Larger, more impactful heading */
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 12px;
+        }
+
+            h2::after {
+                content: '';
+                display: block;
+                width: 80px; /* Longer underline */
+                height: 5px; /* Thicker underline */
+                background-color: var(--secondary-accent);
+                margin: 12px auto 0;
+                border-radius: 3px;
+                animation: underlineDraw 1s ease-out forwards;
+            }
+
+        @keyframes underlineDraw {
+            from {
+                width: 0;
+            }
+
+            to {
+                width: 80px;
+            }
+        }
+
+        /* Form Styling */
+        form {
+            display: none;
+            flex-direction: column;
+            position: absolute; /* For smooth transitions between forms */
+            width: calc(100% - 90px); /* Adjust for container padding */
+            padding: 0; /* Remove form padding, handled by container */
+            top: 130px; /* Position below the heading */
+            left: 45px; /* Match container padding */
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            opacity: 0;
+            transform: translateX(100%);
+        }
+
+            form.active {
+                display: flex;
+                opacity: 1;
+                transform: translateX(0);
+                position: static; /* Revert to static once active to take up space */
+                animation: formEntry 0.6s ease forwards;
+            }
+        /* Specific animation for form entry when toggled */
+        @keyframes formEntry {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+        .field-group {
+            position: relative;
+            margin-bottom: 25px; /* More space between fields */
+        }
+
+        input[type="text"], input[type="email"], input[type="password"] {
+            padding: 15px 55px 15px 20px; /* Increased padding for aesthetics and icon */
+            width: calc(100% - 75px); /* Adjust width for padding and mic icon */
+            border: 1px solid var(--border-color);
+            border-radius: 10px; /* More rounded inputs */
+            font-size: 1.05em;
+            color: var(--text-dark);
+            background-color: var(--background-light); /* Light background for inputs */
+            transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+        }
+
+            input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
+                border-color: var(--primary-accent);
+                box-shadow: 0 0 0 4px var(--input-focus-glow);
+                background-color: var(--white); /* White background on focus */
+                outline: none;
+            }
+
+        /* Voice Input Button */
+        .mic-btn {
+            position: absolute;
+            right: 15px; /* Closer to the right edge */
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            color: var(--primary-accent);
+            font-size: 1.5em; /* Larger icon */
+            border: none;
+            cursor: pointer;
+            padding: 8px; /* Larger clickable area */
+            border-radius: 50%;
+            transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+            display: flex; /* For perfect centering of icon */
+            align-items: center;
+            justify-content: center;
+        }
+
+            .mic-btn:hover {
+                background-color: var(--light-blue); /* Lighter blue on hover */
+                color: var(--dark-blue);
+                transform: translateY(-50%) scale(1.1); /* Subtle pop effect */
+            }
+
+        /* Submit Button */
+        button[type="submit"] {
+            padding: 15px 30px;
+            background: var(--primary-accent);
+            color: var(--white);
+            border: none;
+            border-radius: 30px; /* Pill-shaped button */
+            cursor: pointer;
+            font-size: 1.2em; /* Larger text */
+            font-weight: 700;
+            margin-top: 25px; /* More space above button */
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 6px 20px rgba(111, 66, 193, 0.3); /* Primary accent shadow */
+        }
+
+            button[type="submit"]:hover {
+                background-color: var(--dark-blue); /* Darker primary on hover */
+                transform: translateY(-3px);
+                box-shadow: 0 8px 25px rgba(111, 66, 193, 0.4);
+            }
+
+        /* Toggle Link */
+        .toggle {
+            text-align: center;
+            margin-top: 35px; /* More space below forms */
+            cursor: pointer;
+            color: var(--primary-accent);
+            font-weight: 600;
+            font-size: 1.05em;
+            transition: color 0.3s ease, text-decoration 0.3s ease;
+        }
+
+            .toggle:hover {
+                color: var(--secondary-accent); /* Accent color on hover */
+                text-decoration: underline;
+            }
+
+        /* Message Styles */
+        .message {
+            text-align: center;
+            margin-top: 25px;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            display: none; /* Hidden by default */
+            animation: slideInMessage 0.5s ease-out forwards;
+            opacity: 0; /* Start hidden for animation */
+        }
+
+        @keyframes slideInMessage {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.error {
+            background-color: #fcebeb; /* Light red */
+            color: var(--error-red);
+            border: 1px solid var(--error-red);
+        }
+
+        .message.success {
+            background-color: #e8f9ed; /* Light green */
+            color: var(--success-green);
+            border: 1px solid var(--success-green);
+        }
+
+        .message.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <ul>
+              <li><a href="index.html">Login</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="forums.html">Forums</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h2>Welcome to ACP</h2>
+
+        <form id="loginForm" class="active">
+            <div class="field-group">
+                <input type="email" id="loginEmail" placeholder="Your Email" required autocomplete="username" />
+                <button type="button" class="mic-btn" onclick="startVoice('loginEmail')"><i class="fas fa-microphone"></i></button>
+            </div>
+            <div class="field-group">
+                <input type="password" id="loginPassword" placeholder="Your Password" required autocomplete="current-password" />
+                <button type="button" class="mic-btn" onclick="startVoice('loginPassword')"><i class="fas fa-microphone"></i></button>
+            </div>
+            <button type="submit">Log In</button>
+            <div id="loginMessage" class="message"></div>
+        </form>
+
+        <form id="registerForm">
+            <div class="field-group">
+                <input type="text" id="regName" placeholder="Full Name" required autocomplete="name" />
+                <button type="button" class="mic-btn" onclick="startVoice('regName')"><i class="fas fa-microphone"></i></button>
+            </div>
+            <div class="field-group">
+                <input type="email" id="regEmail" placeholder="Your Email" required autocomplete="email" />
+                <button type="button" class="mic-btn" onclick="startVoice('regEmail')"><i class="fas fa-microphone"></i></button>
+            </div>
+            <div class="field-group">
+                <input type="password" id="regPassword" placeholder="Create a Password" required autocomplete="new-password" />
+                <button type="button" class="mic-btn" onclick="startVoice('regPassword')"><i class="fas fa-microphone"></i></button>
+            </div>
+            <button type="submit">Register</button>
+            <div id="registerMessage" class="message"></div>
+        </form>
+
+        <div class="toggle" onclick="toggleForms()">Don't have an account? Register here</div>
+    </div>
+
+    <script>
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const toggle = document.querySelector('.toggle');
+        const loginMessage = document.getElementById('loginMessage');
+        const registerMessage = document.getElementById('registerMessage');
+
+        // Simulated user data (for client-side demo)
+        const users = {
+            "test@example.com": { password: "Password123!", fullName: "Test User" }
+        };
+        let registeredUsers = { ...users }; // Start with a copy
+
+        function clearMessages() {
+            loginMessage.classList.remove('active', 'error', 'success');
+            registerMessage.classList.remove('active', 'error', 'success');
+            loginMessage.textContent = '';
+            registerMessage.textContent = '';
+        }
+
+        function toggleForms() {
+            const isLoginFormActive = loginForm.classList.contains('active');
+
+            // Hide current active form instantly
+            if (isLoginFormActive) {
+                loginForm.style.opacity = '0';
+                loginForm.style.transform = 'translateX(-100%)';
+                setTimeout(() => {
+                    loginForm.classList.remove('active');
+                    registerForm.classList.add('active');
+                    registerForm.style.opacity = '1';
+                    registerForm.style.transform = 'translateX(0)';
+                }, 300); // Allow time for exit animation
+            } else {
+                registerForm.style.opacity = '0';
+                registerForm.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    registerForm.classList.remove('active');
+                    loginForm.classList.add('active');
+                    loginForm.style.opacity = '1';
+                    loginForm.style.transform = 'translateX(0)';
+                }, 300); // Allow time for exit animation
+            }
+
+            toggle.textContent = isLoginFormActive
+                ? "Already have an account? Log in here"
+                : "Don't have an account? Register here";
+
+            clearMessages(); // Clear messages when toggling forms
+        }
+
+        // Voice input function
+        function startVoice(inputId) {
+            const inputField = document.getElementById(inputId);
+            // Check for browser support
+            if (!('SpeechRecognition' in window) && !('webkitSpeechRecognition' in window)) {
+                alert('Sorry, your browser does not support speech recognition. Please use Chrome or Edge for this feature.');
+                return;
+            }
+
+            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = 'en-US';
+            recognition.interimResults = false; // Only return final results
+            recognition.maxAlternatives = 1;
+
+            // Visual feedback when listening
+            inputField.style.borderColor = 'var(--secondary-accent)'; /* Orange glow */
+            inputField.style.boxShadow = '0 0 0 4px rgba(255, 179, 71, 0.4)';
+            inputField.placeholder = "Listening..."; // Give user feedback
+
+            recognition.start();
+
+            recognition.onresult = function (event) {
+                const result = event.results[0][0].transcript;
+                inputField.value = result;
+            };
+
+            recognition.onerror = function (event) {
+                console.error('Speech recognition error:', event.error);
+                alert('Speech recognition error: ' + event.error + '. Please try again or type manually.');
+            };
+
+            recognition.onend = function () {
+                // Reset visual feedback regardless of success or error
+                inputField.style.borderColor = 'var(--border-color)';
+                inputField.style.boxShadow = 'none';
+                // Restore original placeholder
+                if (inputId === 'loginEmail') inputField.placeholder = "Your Email";
+                else if (inputId === 'loginPassword') inputField.placeholder = "Your Password";
+                else if (inputId === 'regName') inputField.placeholder = "Full Name";
+                else if (inputId === 'regEmail') inputField.placeholder = "Your Email";
+                else if (inputId === 'regPassword') inputField.placeholder = "Create a Password";
+            };
+        }
+
+        // Form submission handlers
+        loginForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            clearMessages();
+
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+
+            if (email === '' || password === '') {
+                loginMessage.textContent = 'Please enter both your email and password.';
+                loginMessage.classList.add('error', 'active');
+                return;
+            }
+
+            // Simulate login against registeredUsers
+            if (registeredUsers[email] && registeredUsers[email].password === password) {
+                loginMessage.textContent = Welcome back, ${ registeredUsers[email].fullName.split(' ')[0] } !Redirecting...;
+        loginMessage.classList.add('success', 'active');
+        setTimeout(() => {
+            alert(Login successful for ${ email }!(This would redirect to dashboard));
+            // window.location.href = 'dashboard.html'; // Example redirect
+        }, 1500);
+            } else {
+            loginMessage.textContent = 'Invalid email or password. Please check your credentials.';
+            loginMessage.classList.add('error', 'active');
+        }
+        });
+
+        registerForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            clearMessages();
+
+            const name = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const password = document.getElementById('regPassword').value.trim();
+
+            if (name === '' || email === '' || password === '') {
+                registerMessage.textContent = 'All fields are required to register.';
+                registerMessage.classList.add('error', 'active');
+                return;
+            }
+
+            // Basic email validation
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                registerMessage.textContent = 'Please enter a valid email address.';
+                registerMessage.classList.add('error', 'active');
+                return;
+            }
+
+            // Password strength (simple check)
+            if (password.length < 8) {
+                registerMessage.textContent = 'Password must be at least 8 characters long.';
+                registerMessage.classList.add('error', 'active');
+                return;
+            }
+
+            // Check if email already registered
+            if (registeredUsers[email]) {
+                registerMessage.textContent = 'This email is already registered. Please log in or use a different email.';
+                registerMessage.classList.add('error', 'active');
+                return;
+            }
+
+            // Simulate registration
+            registeredUsers[email] = { password: password, fullName: name };
+            registerMessage.textContent = 'Registration successful! You can now log in.';
+            registerMessage.classList.add('success', 'active');
+
+            setTimeout(() => {
+                toggleForms(); // Switch to login form after successful registration
+            }, 2000);
+        });
+
+        // Initial state setup for forms
+        document.addEventListener('DOMContentLoaded', () => {
+            // Ensure only one form is active initially and positioned correctly
+            loginForm.classList.add('active');
+            registerForm.classList.remove('active');
+            registerForm.style.opacity = '0';
+            registerForm.style.transform = 'translateX(100%)';
+            loginForm.style.opacity = '1';
+            loginForm.style.transform = 'translateX(0)';
+
+            toggle.textContent = "Don't have an account? Register here";
+        });
+    </script>
+
+</body>
+</html>

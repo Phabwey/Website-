@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ACP Forums - Collaborate & Connect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Unique & Beautiful Design System - Forums Page */
+        :root {
+            --primary-accent: #6f42c1; /* Deep Lavender/Violet - unique primary */
+            --secondary-accent: #ffb347; /* Warm Orange - engaging secondary */
+            --text-dark: #333d42; /* Almost Black Blue */
+            --text-medium: #5a6268; /* Dark Grey */
+            --text-light: #8e949a; /* Medium Grey */
+            --background-light: #f5f7fa; /* Very light grey-blue */
+            --white: #ffffff;
+            --border-color: #e0e6ed;
+            --shadow-light: rgba(0, 0, 0, 0.08);
+            --shadow-medium: rgba(0, 0, 0, 0.15);
+            --hover-blue: #005a99; /* Darker blue for nav hover */
+            --category-card-bg: #ffffff;
+            --table-header-bg: var(--primary-accent); /* Use primary accent for table header */
+            --table-row-hover: #f0f5fb; /* Light blue on row hover */
+        }
+
+        /* Reset & Base Styles */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            margin: 0;
+            background: linear-gradient(135deg, var(--background-light) 0%, var(--white) 100%);
+            color: var(--text-medium);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden; /* Prevent horizontal scroll from animations */
+        }
+
+        /* --- Navigation Bar --- */
+        nav {
+            background-color: var(--primary-accent);
+            padding: 18px 0;
+            box-shadow: 0 4px 15px var(--shadow-light);
+            z-index: 100;
+        }
+
+            nav ul {
+                list-style: none;
+                display: flex;
+                justify-content: center;
+                margin: 0;
+                padding: 0;
+            }
+
+                nav ul li {
+                    margin: 0 25px;
+                }
+
+                    nav ul li a {
+                        color: var(--white);
+                        text-decoration: none;
+                        font-family: 'Montserrat', sans-serif;
+                        font-weight: 600;
+                        font-size: 1.05em;
+                        padding: 8px 15px;
+                        border-radius: 25px; /* Pill shape for navigation */
+                        transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+                        position: relative;
+                        overflow: hidden;
+                    }
+
+                        nav ul li a::before {
+                            content: '';
+                            position: absolute;
+                            top: 0;
+                            left: -100%;
+                            width: 100%;
+                            height: 100%;
+                            background: rgba(255, 255, 255, 0.1);
+                            transition: left 0.3s ease-out;
+                            z-index: 0;
+                        }
+
+                        nav ul li a:hover::before {
+                            left: 0;
+                        }
+
+                        nav ul li a:hover {
+                            background-color: rgba(255, 255, 255, 0.1);
+                            transform: translateY(-2px);
+                            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+                        }
+
+        /* --- Header Section --- */
+        header {
+            padding: 40px 20px 30px 20px; /* More vertical padding */
+            text-align: center;
+            background: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05); /* Softer shadow */
+            margin-bottom: 30px; /* Space before main content */
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        header h1 {
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 3.2rem; /* Larger heading */
+            color: var(--primary-accent);
+            letter-spacing: -0.5px;
+            position: relative;
+            display: inline-block; /* For underline positioning */
+        }
+
+            header h1::after {
+                content: '';
+                display: block;
+                width: 70%;
+                height: 5px;
+                background: var(--secondary-accent);
+                margin: 10px auto 0;
+                border-radius: 3px;
+                animation: expandUnderline 1s ease-out forwards;
+            }
+
+        @keyframes expandUnderline {
+            from {
+                width: 0;
+            }
+
+            to {
+                width: 70%;
+            }
+        }
+
+
+        header p {
+            margin-top: 15px; /* More space */
+            font-size: 1.3rem; /* Larger sub-text */
+            color: var(--text-medium);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* --- Main Content Area --- */
+        main {
+            max-width: 1200px; /* Slightly wider main content */
+            margin: 0px auto 50px auto; /* Adjust top margin for header space */
+            padding: 0 25px 50px 25px;
+            flex-grow: 1; /* Allow main to expand */
+        }
+
+        /* --- Search bar & New Thread Button --- */
+        .top-controls {
+            display: flex;
+            flex-wrap: wrap; /* Allow wrapping on small screens */
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            gap: 20px; /* Space between items when wrapped */
+        }
+
+        .search-container {
+            flex-grow: 1; /* Allows search bar to take available space */
+            max-width: 700px; /* Max width for search */
+            position: relative; /* For search icon */
+        }
+
+            .search-container input[type="search"] {
+                width: 100%;
+                padding: 14px 20px 14px 50px; /* Increased padding, space for icon */
+                border-radius: 30px;
+                border: 2px solid var(--primary-accent);
+                font-size: 1.15rem;
+                color: var(--text-dark);
+                background-color: var(--white);
+                transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            }
+
+                .search-container input[type="search"]::placeholder {
+                    color: var(--text-light);
+                }
+
+                .search-container input[type="search"]:focus {
+                    outline: none;
+                    border-color: var(--secondary-accent);
+                    box-shadow: 0 0 12px rgba(255, 179, 71, 0.4); /* Glow matching accent */
+                }
+
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary-accent);
+            font-size: 1.2em;
+        }
+
+
+        .new-thread-btn {
+            display: inline-flex; /* Use flex for icon alignment */
+            align-items: center;
+            gap: 8px; /* Space between icon and text */
+            background-color: var(--primary-accent);
+            color: white;
+            padding: 14px 30px; /* Larger padding */
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(111, 66, 193, 0.2); /* Primary accent shadow */
+        }
+
+            .new-thread-btn:hover {
+                background-color: var(--hover-blue); /* Darker blue on hover */
+                transform: translateY(-3px);
+                box-shadow: 0 6px 20px rgba(111, 66, 193, 0.3);
+            }
+
+            .new-thread-btn i {
+                font-size: 1.2em;
+            }
+
+        /* --- Forum Categories Section --- */
+        .categories {
+            display: grid; /* Use CSS Grid for better control */
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive grid */
+            gap: 25px; /* More space between cards */
+            margin-bottom: 50px; /* Space before threads table */
+            justify-content: center; /* Center cards if they don't fill the row */
+            animation: fadeInUp 0.8s ease-out forwards;
+            animation-delay: 0.2s; /* Delay for effect after header */
+            opacity: 0;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+        .category-card {
+            background: var(--category-card-bg);
+            border-radius: 15px; /* More rounded */
+            box-shadow: 0 5px 20px var(--shadow-light); /* Softer shadow */
+            padding: 30px; /* More internal padding */
+            transition: box-shadow 0.3s ease, transform 0.2s ease, background-color 0.3s ease;
+            cursor: pointer;
+            text-align: center;
+            border: 1px solid var(--border-color); /* Subtle border */
+        }
+
+            .category-card:hover {
+                box-shadow: 0 8px 30px rgba(0,0,0,0.15); /* Stronger shadow on hover */
+                transform: translateY(-5px); /* Lift effect */
+                background-color: #fcfdff; /* Very slight change on hover */
+            }
+
+        .category-icon {
+            font-size: 3.5em; /* Larger icon */
+            color: var(--secondary-accent); /* Orange icon color */
+            margin-bottom: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .category-card:hover .category-icon {
+            transform: scale(1.1) rotate(5deg); /* Icon animation on card hover */
+        }
+
+        .category-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.6rem; /* Larger title */
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .category-desc {
+            font-size: 1.05rem; /* Slightly larger description */
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+
+        /* --- Threads Table Section --- */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--white);
+            box-shadow: 0 5px 20px var(--shadow-light);
+            border-radius: 15px; /* Consistent rounded corners */
+            overflow: hidden; /* Ensures border-radius applies to content */
+            animation: fadeInUp 0.8s ease-out forwards;
+            animation-delay: 0.4s; /* Delay for effect after categories */
+            opacity: 0;
+        }
+
+        caption {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary-accent);
+            text-align: left;
+            margin-bottom: 20px; /* More space below caption */
+            padding-left: 5px; /* Align with table */
+        }
+
+        thead {
+            background-color: var(--table-header-bg);
+            color: var(--white);
+            text-align: left;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+        }
+
+        th, td {
+            padding: 18px 25px; /* Increased padding */
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        tbody tr:hover {
+            background-color: var(--table-row-hover);
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .thread-title a {
+            font-weight: 600;
+            color: var(--primary-accent);
+            text-decoration: none;
+            font-size: 1.15rem; /* Larger title */
+            transition: color 0.3s ease;
+        }
+
+            .thread-title a:hover {
+                color: var(--secondary-accent); /* Orange on hover */
+                text-decoration: underline;
+            }
+
+        .thread-author, .thread-replies, .thread-last {
+            font-size: 0.95rem; /* Slightly larger */
+            color: var(--text-medium);
+        }
+
+        .thread-replies {
+            font-weight: 600;
+            color: var(--primary-accent); /* Make replies stand out */
+        }
+
+        .thread-last {
+            font-style: italic;
+            color: var(--text-light);
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 900px) {
+            .categories {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                gap: 10px;
+                align-items: center;
+            }
+
+                nav ul li {
+                    margin: 0; /* Remove horizontal margin for vertical stack */
+                }
+
+            .top-controls {
+                flex-direction: column;
+                align-items: stretch; /* Stretch items to full width */
+            }
+
+            .search-container {
+                max-width: 100%; /* Allow search to take full width */
+            }
+
+            .new-thread-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            /* Responsive Table (Cards) */
+            table {
+                border-radius: 0; /* Remove border-radius on mobile table to make individual rows rounded */
+                box-shadow: none; /* Remove table shadow */
+                background: none; /* Remove table background */
+            }
+
+            caption {
+                text-align: center;
+                margin-bottom: 30px;
+            }
+
+            thead {
+                display: none; /* Hide table header */
+            }
+
+            tbody tr {
+                margin-bottom: 25px; /* More space between "cards" */
+                border: 1px solid var(--border-color);
+                border-radius: 12px;
+                padding: 20px; /* More padding inside card */
+                display: flex;
+                flex-direction: column;
+                background-color: var(--white);
+                box-shadow: 0 3px 15px var(--shadow-light);
+                transition: transform 0.2s ease, box-shadow 0.3s ease;
+            }
+
+                tbody tr:hover {
+                    transform: translateY(-3px);
+                    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+                    background-color: var(--white); /* Keep white on hover */
+                }
+
+                tbody tr:last-child {
+                    margin-bottom: 0;
+                }
+
+            tbody td {
+                border: none;
+                padding: 10px 0; /* Adjust padding for mobile cards */
+                position: relative;
+                padding-left: 0; /* No left padding */
+                text-align: left; /* Align content to left */
+            }
+
+                tbody td::before {
+                    content: attr(data-label) ": "; /* Add colon for clarity */
+                    position: static; /* Remove absolute positioning */
+                    display: inline-block; /* Make it inline with content */
+                    width: auto; /* Remove fixed width */
+                    padding-right: 5px; /* Small space after label */
+                    white-space: normal; /* Allow wrap */
+                    font-weight: 700;
+                    color: var(--primary-accent); /* Label color */
+                    text-align: left;
+                }
+
+            .thread-title {
+                margin-bottom: 10px; /* Space below title */
+                font-size: 1.25rem; /* Larger title on mobile */
+            }
+
+                .thread-title a {
+                    display: block; /* Make link block-level */
+                    font-size: 1.25rem;
+                    color: var(--text-dark); /* Darker color for main thread title */
+                }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 2.5rem;
+            }
+
+            header p {
+                font-size: 1.1rem;
+            }
+
+            .category-card {
+                padding: 20px;
+            }
+
+            .category-icon {
+                font-size: 3em;
+            }
+
+            .category-title {
+                font-size: 1.4rem;
+            }
+
+            .new-thread-btn,
+            .search-container input[type="search"] {
+                font-size: 1rem;
+                padding: 12px 20px 12px 45px;
+            }
+
+            .search-icon {
+                left: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+              <li><a href="index.html">Login</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="forums.html">Forums</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <h1>Community Forums</h1>
+        <p>Explore, learn, and grow together. Your hub for discussions and collaborative insights!</p>
+    </header>
+
+    <main>
+        <div class="top-controls">
+            <div class="search-container">
+                <i class="fas fa-search search-icon" aria-hidden="true"></i>
+                <input type="search" id="forumSearch" placeholder="Search threads by title or author..." aria-label="Search forum threads" />
+            </div>
+            <a href="#" class="new-thread-btn" id="newThreadBtn" aria-label="Create a new discussion thread">
+                <i class="fas fa-plus"></i> New Thread
+            </a>
+        </div>
+
+        <section class="categories" aria-label="Forum categories">
+            <div class="category-card" tabindex="0" data-category="web-development">
+                <i class="fas fa-laptop-code category-icon" aria-hidden="true"></i>
+                <h2 class="category-title">Web Development</h2>
+                <p class="category-desc">HTML, CSS, JavaScript, and frontend frameworks.</p>
+            </div>
+            <div class="category-card" tabindex="0" data-category="mobile-apps">
+                <i class="fas fa-mobile-alt category-icon" aria-hidden="true"></i>
+                <h2 class="category-title">Mobile Apps</h2>
+                <p class="category-desc">iOS, Android, cross-platform, and mobile UX.</p>
+            </div>
+            <div class="category-card" tabindex="0" data-category="ai-ml">
+                <i class="fas fa-robot category-icon" aria-hidden="true"></i>
+                <h2 class="category-title">AI & Machine Learning</h2>
+                <p class="category-desc">Artificial intelligence, data science, algorithms.</p>
+            </div>
+            <div class="category-card" tabindex="0" data-category="cloud-computing">
+                <i class="fas fa-cloud category-icon" aria-hidden="true"></i>
+                <h2 class="category-title">Cloud Computing</h2>
+                <p class="category-desc">AWS, Azure, Google Cloud, DevOps practices.</p>
+            </div>
+            <div class="category-card" tabindex="0" data-category="cybersecurity">
+                <i class="fas fa-shield-alt category-icon" aria-hidden="true"></i>
+                <h2 class="category-title">Cybersecurity</h2>
+                <p class="category-desc">Network security, ethical hacking, best practices.</p>
+            </div>
+        </section>
+
+        <section aria-label="Forum threads">
+            <h3 id="recentThreadsHeader" style="text-align:left; margin-bottom: 10px; font-weight: 600; font-family: 'Montserrat', sans-serif; font-size: 1.4rem; color: var(--primary-accent);">
+                Recent discussions and active threads
+            </h3>
+            <table role="grid" aria-describedby="recentThreadsHeader">
+                <thead>
+                    <tr>
+                        <th scope="col">Thread</th>
+                        <th scope="col">Author</th>
+                        <th scope="col">Replies</th>
+                        <th scope="col">Last Activity</th>
+                    </tr>
+                </thead>
+                <tbody id="threadsTableBody">
+                </tbody>
+            </table>
+            <p id="noThreadsFound" style="text-align: center; margin-top: 30px; color: var(--text-light); display: none;">No threads found matching your criteria.</p>
+        </section>
+    </main>
+
+    <script>
+        // Data for threads (simulated from a backend)
+        const allThreads = [
+            { id: 1, title: "How to start with React.js?", author: "Alice", replies: 23, lastActivity: "2025-05-18", category: "web-development" },
+            { id: 2, title: "Best practices for mobile UX", author: "Bob", replies: 15, lastActivity: "2025-05-17", category: "mobile-apps" },
+            { id: 3, title: "Machine Learning algorithms explained", author: "Carol", replies: 34, lastActivity: "2025-05-19", category: "ai-ml" },
+            { id: 4, title: "Setting up AWS Cloud environment", author: "Dave", replies: 10, lastActivity: "2025-05-16", category: "cloud-computing" },
+            { id: 5, title: "How to improve network security?", author: "Eve", replies: 28, lastActivity: "2025-05-18", category: "cybersecurity" },
+            { id: 6, title: "Understanding JavaScript closures", author: "Frank", replies: 12, lastActivity: "2025-06-10", category: "web-development" },
+            { id: 7, title: "Flutter vs React Native for startups", author: "Grace", replies: 20, lastActivity: "2025-06-11", category: "mobile-apps" },
+            { id: 8, title: "Deep Learning with Python and TensorFlow", author: "Heidi", replies: 45, lastActivity: "2025-06-12", category: "ai-ml" },
+            { id: 9, title: "Azure Functions for serverless applications", author: "Ivan", replies: 8, lastActivity: "2025-06-09", category: "cloud-computing" },
+            { id: 10, title: "Penetration testing fundamentals", author: "Judy", replies: 30, lastActivity: "2025-06-08", category: "cybersecurity" }
+        ];
+
+        const threadsTableBody = document.getElementById('threadsTableBody');
+        const forumSearchInput = document.getElementById('forumSearch');
+        const categoryCards = document.querySelectorAll('.category-card');
+        const noThreadsFoundMessage = document.getElementById('noThreadsFound');
+        let activeCategory = null; // Tracks which category is currently filtered
+
+        // Function to render threads into the table
+        function renderThreads(threadsToRender) {
+            threadsTableBody.innerHTML = ''; // Clear existing threads
+            if (threadsToRender.length === 0) {
+                noThreadsFoundMessage.style.display = 'block';
+                return;
+            }
+            noThreadsFoundMessage.style.display = 'none';
+
+            threadsToRender.forEach(thread => {
+                const row = document.createElement('tr');
+                row.setAttribute('tabindex', '0'); // Make rows focusable
+                row.innerHTML = `
+                        <td class="thread-title" data-label="Thread">
+                            <a href="thread-detail.html?id=${thread.id}">${thread.title}</a>
+                        </td>
+                        <td class="thread-author" data-label="Author">${thread.author}</td>
+                        <td class="thread-replies" data-label="Replies">${thread.replies}</td>
+                        <td class="thread-last" data-label="Last Activity">${thread.lastActivity}</td>
+                    `;
+                threadsTableBody.appendChild(row);
+            });
+        }
+
+        // --- Event Listeners ---
+
+        // 1. Search Functionality
+        forumSearchInput.addEventListener('input', function () {
+            const searchTerm = this.value.toLowerCase();
+            let filteredThreads = allThreads;
+
+            // Apply category filter if active
+            if (activeCategory) {
+                filteredThreads = filteredThreads.filter(thread => thread.category === activeCategory);
+            }
+
+            // Apply search term filter
+            filteredThreads = filteredThreads.filter(thread =>
+                thread.title.toLowerCase().includes(searchTerm) ||
+                thread.author.toLowerCase().includes(searchTerm)
+            );
+            renderThreads(filteredThreads);
+        });
+
+        // 2. Category Filtering
+        categoryCards.forEach(card => {
+            card.addEventListener('click', function () {
+                const category = this.dataset.category;
+
+                // Clear previous active state and set new one
+                categoryCards.forEach(c => c.style.border = '1px solid var(--border-color)'); // Reset border
+                if (activeCategory === category) {
+                    // Clicking the active category again deselects it
+                    activeCategory = null;
+                    this.style.border = '1px solid var(--border-color)';
+                } else {
+                    activeCategory = category;
+                    this.style.border = 2px solid var(--primary - accent); // Highlight active category
+                }
+
+                // Re-filter threads based on the new active category and current search term
+                const currentSearchTerm = forumSearchInput.value.toLowerCase();
+                let filteredThreads = allThreads;
+
+                if (activeCategory) {
+                    filteredThreads = filteredThreads.filter(thread => thread.category === activeCategory);
+                }
+
+                if (currentSearchTerm) {
+                    filteredThreads = filteredThreads.filter(thread =>
+                        thread.title.toLowerCase().includes(currentSearchTerm) ||
+                        thread.author.toLowerCase().includes(currentSearchTerm)
+                    );
+                }
+                renderThreads(filteredThreads);
+            });
+        });
+
+        // 3. New Thread Button Click (Simulated)
+        document.getElementById('newThreadBtn').addEventListener('click', function (event) {
+            event.preventDefault(); // Prevent default link behavior
+            alert("This would open a 'Create New Thread' form or page!");
+            // In a real app, you'd redirect: window.location.href = 'new-thread-form.html';
+        });
+
+        // Initial render of all threads on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            renderThreads(allThreads);
+        });
+    </script>
+</body>
+</h
