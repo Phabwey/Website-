@@ -186,3 +186,31 @@ This project is developed for educational and portfolio purposes.
 If you found this project useful, please consider giving it a **⭐ Star** on GitHub.
 
 Thank you for visiting my repository!
+
+
+## 📚 Documentation
+
+The following project documentation is included in this repository:
+
+- 📖 User Manual
+- 🛠 Technical Manual
+- ⚙️ Installation Guide
+- 🚀 Deployment Guide
+- ✅ Test Plan
+- 📑 Project Report
+- 🎤 PowerPoint Presentation
+- 🖼 Project Poster
+
+### Screenshots
+
+The screenshots folder contains images of the application interface.
+
+### Repository Structure
+
+```
+docs/
+presentation/
+poster/
+screenshots/
+```
+
