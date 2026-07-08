@@ -1,0 +1,208 @@
+1. db_connect.php
+<?php
+
+$host = "localhost";
+$user = "root";
+$password = "";
+$database = "collaboratex";
+
+$conn = new mysqli($host, $user, $password, $database);
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+?>
+2. register.php
+<?php
+include 'db_connect.php';
+
+if(isset($_POST['register'])){
+
+    $full_name = $_POST['full_name'];
+    $email = $_POST['email'];
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $role = $_POST['role'];
+
+    $sql = "INSERT INTO users(full_name,email,password,role)
+            VALUES('$full_name','$email','$password','$role')";
+
+    if($conn->query($sql)==TRUE){
+        echo "Registration Successful";
+    }else{
+        echo "Registration Failed";
+    }
+}
+
+$conn->close();
+
+?>
+3. login.php
+<?php
+session_start();
+include 'db_connect.php';
+
+if(isset($_POST['login'])){
+
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+
+    $sql = "SELECT * FROM users WHERE email='$email'";
+    $result = $conn->query($sql);
+
+    if($result->num_rows > 0){
+
+        $user = $result->fetch_assoc();
+
+        if(password_verify($password,$user['password'])){
+
+            $_SESSION['user']=$user['full_name'];
+            header("Location: ../index.html");
+
+        }else{
+            echo "Incorrect Password";
+        }
+
+    }else{
+        echo "User Not Found";
+    }
+}
+
+$conn->close();
+
+?>
+4. forgot-password.php
+<?php
+include 'db_connect.php';
+
+if(isset($_POST['reset'])){
+
+    $email = $_POST['email'];
+
+    $token = md5(rand());
+
+    $sql = "SELECT user_id FROM users WHERE email='$email'";
+    $result = $conn->query($sql);
+
+    if($result->num_rows>0){
+
+        $row = $result->fetch_assoc();
+
+        $user_id = $row['user_id'];
+
+        $conn->query("INSERT INTO password_resets(user_id,reset_token,expiry_date)
+        VALUES('$user_id','$token',DATE_ADD(NOW(),INTERVAL 1 DAY))");
+
+        echo "Password reset request created.";
+
+    }else{
+
+        echo "Email not found.";
+
+    }
+
+}
+
+$conn->close();
+
+?>
+5. projects.php
+<?php
+include 'db_connect.php';
+
+if(isset($_POST['submit_project'])){
+
+    $user_id = $_POST['user_id'];
+    $title = $_POST['title'];
+    $description = $_POST['description'];
+    $category = $_POST['category'];
+    $project_file = $_POST['project_file'];
+
+    $sql="INSERT INTO projects(user_id,title,description,category,project_file)
+    VALUES('$user_id','$title','$description','$category','$project_file')";
+
+    if($conn->query($sql)==TRUE){
+        echo "Project Uploaded Successfully";
+    }else{
+        echo "Upload Failed";
+    }
+
+}
+
+$conn->close();
+
+?>
+6. forums.php
+<?php
+include 'db_connect.php';
+
+if(isset($_POST['post'])){
+
+    $user_id = $_POST['user_id'];
+    $topic = $_POST['topic'];
+    $message = $_POST['message'];
+
+    $sql="INSERT INTO forums(user_id,topic,message)
+    VALUES('$user_id','$topic','$message')";
+
+    if($conn->query($sql)==TRUE){
+        echo "Forum Posted";
+    }else{
+        echo "Error Posting";
+    }
+
+}
+
+$conn->close();
+
+?>
+7. resources.php
+<?php
+include 'db_connect.php';
+
+if(isset($_POST['upload'])){
+
+    $uploaded_by=$_POST['uploaded_by'];
+    $title=$_POST['title'];
+    $description=$_POST['description'];
+    $file_name=$_POST['file_name'];
+
+    $sql="INSERT INTO resources(uploaded_by,title,description,file_name)
+    VALUES('$uploaded_by','$title','$description','$file_name')";
+
+    if($conn->query($sql)==TRUE){
+        echo "Resource Uploaded";
+    }else{
+        echo "Upload Failed";
+    }
+
+}
+
+$conn->close();
+
+?>
+8. contact.php
+<?php
+include 'db_connect.php';
+
+if(isset($_POST['send'])){
+
+    $full_name=$_POST['full_name'];
+    $email=$_POST['email'];
+    $subject=$_POST['subject'];
+    $message=$_POST['message'];
+
+    $sql="INSERT INTO contact_messages(full_name,email,subject,message)
+    VALUES('$full_name','$email','$subject','$message')";
+
+    if($conn->query($sql)==TRUE){
+        echo "Message Sent Successfully";
+    }else{
+        echo "Failed to Send";
+    }
+
+}
+
+$conn->close();
+
+?>
